@@ -1,0 +1,47 @@
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: block;
+  position: absolute;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  z-index: 1000;
+}
+
+.dropdown-menu li {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: #e9ecef;
+}
+
+.container {
+  position: relative;
+  height: 100vh;
+  /* Set the height to adjust the button's position */
+}
+
+.top-right-button {
+  float: right;
+  /* position: absolute; */
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.top-left-button {
+  float: left;
+}

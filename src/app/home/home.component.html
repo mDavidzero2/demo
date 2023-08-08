@@ -1,0 +1,61 @@
+<input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search products">
+<div class="container mt-5">
+  <h2 class="mb-4">Billing Application</h2>
+
+  <button class="top-right-button" (click)="openNewTab()">New Bill</button>
+
+  <table id="printTable" class="table">
+    <!-- Table Header -->
+    <thead>
+      <tr>
+        <th>Product Name</th>
+        <th>Rate per Kg/Pkt</th>
+        <th>Quantity</th>
+        <th>Amount</th>
+        <th></th>
+      </tr>
+    </thead>
+    <!-- Table Body -->
+    <tbody id="productTable">
+      <!-- Use *ngFor to loop through the rows -->
+      <tr *ngFor="let row of rows; let i = index;">
+        <td>
+          <!-- <input type="text" class="form-control" name="productName" [(ngModel)]="row.productName"
+            (input)="calculateAmount(row)" [ngModelOptions]="{standalone: true}" (focus)="showDropdown = true"
+            (blur)="hideDropdown()" placeholder="Enter product">
+          <div *ngIf="showDropdown && row.productName" class="dropdown">
+             <ul class="dropdown-menu">
+              <li *ngFor="let product of productData | filter: row.productName">
+                <a ></a>
+              </li>
+            </ul> 
+          
+          </div> -->
+          <ng-select  [(ngModel)]="row.productName">
+            <ng-option *ngFor="let product of productData" [value]="product.billingName">
+              {{ product.billingName }} - Rs.{{ product.ratePerKg }}
+            </ng-option>
+         </ng-select>
+         
+        </td>
+        <td><input type="number" class="form-control" name="ratePerKg" [(ngModel)]="row.ratePerKg"
+            (input)="calculateAmount(row)" (keypress)="validateInput($event)"></td>
+        <td><input type="text" class="form-control" name="quantity" [(ngModel)]="row.quantity"
+            (input)="calculateAmount(row)" (keypress)="validateInput($event)"></td>
+        <td><input type="number" class="form-control" [(ngModel)]="row.amount" disabled></td>
+        <td><button class="btn btn-danger" (click)="removeRow(i)">X</button></td>
+        <td><button class="btn btn-success"style="width: 80px;">Save</button></td>
+      </tr>
+      <tr>
+        <td colspan="2"></td>
+        <th>Total Amount</th>
+        <td><input type="number" class="form-control" [(ngModel)]="totalAmount" disabled></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn btn-primary top-left-button " (click)="addRow()">Add Product</button>
+  <div>
+    <button class="top-right-button" (click)="printTable()">print Table</button>
+  </div>
+</div>
