@@ -28,9 +28,11 @@ export class HomeComponent implements OnInit {
   rows = [
     { productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 },
     { productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 },
+    { productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 },
+    { productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 },
     { productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 }
   ];
-  printTable() {
+  printTable(): void {
     var divElements = document.getElementById("printTable")?.outerHTML;
     var oldPage = document.body.innerHTML;
     document.body.innerHTML =
@@ -73,12 +75,23 @@ export class HomeComponent implements OnInit {
     window.open(newTabUrl, '_blank');
   }
   validateInput(event: any) {
-    const pattern = /^[0-9]+(\.[0-9]*)?$/;
+    const pattern = /(^[0-9]*)+(\.[0-9]*)?$/;
     const inputChar = event.key;
     const currentValue = event.target.value;
     if (!pattern.test(currentValue + inputChar)) {
       event.preventDefault();
     }
   }
-
+  updateRatePerKg(row: any, selectedProductName: string) {
+    const selectedProduct = this.productData.find(product => product.billingName === selectedProductName);
+    if (selectedProduct) {
+      row.ratePerKg = selectedProduct.ratePerKg;
+      row.productName = selectedProduct.billingName;
+      this.calculateAmount(row);
+    }
+  }
+  shouldDisablePrintButton(): boolean {
+    return this.rows.some(row => !row.productName);
+    //return this.rows.some(row => !row.productName || !row.ratePerKg || !row.quantity);
+  }
 }
