@@ -20,7 +20,7 @@
       <!-- Use *ngFor to loop through the rows -->
       <tr *ngFor="let row of rows; let i = index;">
         <td>
-          <ng-select [(ngModel)]="row.productName" [style.width.px]="250"
+          <ng-select [(ngModel)]="row.productName" [style.width.px]="250" 
             (change)="updateRatePerKg(row, row.productName)">
             <ng-option *ngFor="let product of productData" [value]="product.billingName">
               {{ product.billingName }} - Rs.{{ product.ratePerKg }}
@@ -34,7 +34,8 @@
         <td><input type="number" class="form-control" [(ngModel)]="row.amount" disabled></td>
         <td><button class="btn btn-danger" (click)="removeRow(i)">Delete</button></td>
         <td><button class="btn btn-success" style="width: 80px;"
-            [disabled]="!row.productName || !row.ratePerKg || !row.quantity">Save</button></td>
+            [disabled]="!row.productName || !row.ratePerKg || !row.quantity" (click)="saveRowProduct(row)">Save</button>
+        </td>
       </tr>
       <tr>
         <td colspan="2"></td>

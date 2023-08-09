@@ -12,4 +12,9 @@ export class ServiceService {
   getProductList(): Observable<any> {
     return this.http.get<any>('http://localhost:9090/demo/getAll');
   }
+  saveProduct(requestBody: any) {
+    const url = 'http://localhost:9090/demo/save';
+    return this.http.post(url, requestBody);
+  }
+
 }

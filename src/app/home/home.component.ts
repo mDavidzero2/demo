@@ -26,11 +26,11 @@ export class HomeComponent implements OnInit {
     this.calculateTotalAmount();
   }
   rows = [
-    { productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 },
-    { productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 },
-    { productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 },
-    { productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 },
-    { productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 }
+    { id: 0, productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 },
+    { id: 0, productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 },
+    { id: 0, productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 },
+    { id: 0, productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 },
+    { id: 0, productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 }
   ];
   printTable(): void {
     var divElements = document.getElementById("printTable")?.outerHTML;
@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit {
   }
   addRow() {
     this.rows.push({
+      id: 0,
       productName: '',
       ratePerKg: 0,
       quantity: "1.0",
@@ -53,7 +54,6 @@ export class HomeComponent implements OnInit {
     this.service.getProductList().subscribe(
       (res: Product[]) => {
         this.productData = res;
-        console.log("res", this.productData)
       }
     );
   }
@@ -87,11 +87,22 @@ export class HomeComponent implements OnInit {
     if (selectedProduct) {
       row.ratePerKg = selectedProduct.ratePerKg;
       row.productName = selectedProduct.billingName;
+      row.id = selectedProduct.id;
       this.calculateAmount(row);
     }
   }
   shouldDisablePrintButton(): boolean {
-    return this.rows.some(row => !row.productName);
-    //return this.rows.some(row => !row.productName || !row.ratePerKg || !row.quantity);
+    //return this.rows.some(row => !row.productName);
+    return this.rows.some(row => !row.productName || !row.ratePerKg || !row.quantity);
+  }
+  saveRowProduct(row: any) {
+    const requestBody = {
+      productId: row.id,
+      productName: row.productName,
+      billingName: row.productName,
+      ratePerKg: row.ratePerKg
+    };
+    console.log(requestBody);
+    this.service.saveProduct(requestBody).subscribe();
   }
 }
