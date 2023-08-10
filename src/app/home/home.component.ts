@@ -28,8 +28,6 @@ export class HomeComponent implements OnInit {
   rows = [
     { id: 0, productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 },
     { id: 0, productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 },
-    { id: 0, productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 },
-    { id: 0, productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 },
     { id: 0, productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 }
   ];
   printTable(): void {
@@ -40,6 +38,19 @@ export class HomeComponent implements OnInit {
       divElements + "</body></html>";
     window.print();
     document.body.innerHTML = oldPage;
+
+
+    // const printWindow = window.open('', '_blank');
+    // if (printWindow) {
+    //   const divElements = document.getElementById("printTable")?.outerHTML;
+    //   const printContent =
+    //     "<html><head><title></title></head><body>" + divElements + "</body></html>";
+    //   printWindow.document.open();
+    //   printWindow.document.write(printContent);
+    //   printWindow.document.close();
+    //   printWindow.print();
+    // }
+
   }
   addRow() {
     this.rows.push({
@@ -96,13 +107,24 @@ export class HomeComponent implements OnInit {
     return this.rows.some(row => !row.productName || !row.ratePerKg || !row.quantity);
   }
   saveRowProduct(row: any) {
-    const requestBody = {
-      productId: row.id,
-      productName: row.productName,
-      billingName: row.productName,
-      ratePerKg: row.ratePerKg
-    };
-    console.log(requestBody);
-    this.service.saveProduct(requestBody).subscribe();
+    if (typeof row.productName === 'object' && 'label' in row.productName) {
+      const requestBody = {
+        productId: row.id,
+        productName: row.productName.label,
+        ratePerKg: row.ratePerKg
+      };
+      console.log("If : "+requestBody);
+      this.service.saveProduct(requestBody).subscribe();
+    } else {
+      const requestBody = {
+        productId: row.id,
+        productName: row.productName,
+        ratePerKg: row.ratePerKg
+      };
+      console.log("Else : "+requestBody); 
+      this.service.saveProduct(requestBody).subscribe((response) => {
+        alert('Product saved successfully!');
+      });
+    }
   }
 }

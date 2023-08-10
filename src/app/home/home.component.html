@@ -1,4 +1,3 @@
-<input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search products">
 <div class="container mt-5">
   <h2 class="mb-4">Billing Application</h2>
 
@@ -20,8 +19,8 @@
       <!-- Use *ngFor to loop through the rows -->
       <tr *ngFor="let row of rows; let i = index;">
         <td>
-          <ng-select [(ngModel)]="row.productName" [style.width.px]="250" 
-            (change)="updateRatePerKg(row, row.productName)">
+          <ng-select [(ngModel)]="row.productName" [style.width.px]="250"
+            (change)="updateRatePerKg(row, row.productName)" [addTag]="true" [multiple]="false">
             <ng-option *ngFor="let product of productData" [value]="product.billingName">
               {{ product.billingName }} - Rs.{{ product.ratePerKg }}
             </ng-option>
