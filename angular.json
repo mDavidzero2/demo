@@ -98,7 +98,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/print-style.css"
             ],
             "scripts": []
           }

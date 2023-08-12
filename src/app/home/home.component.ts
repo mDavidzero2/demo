@@ -31,13 +31,46 @@ export class HomeComponent implements OnInit {
     { id: 0, productName: '', ratePerKg: 0, quantity: "1.0", amount: 0 }
   ];
   printTable(): void {
-    var divElements = document.getElementById("printTable")?.outerHTML;
-    var oldPage = document.body.innerHTML;
-    document.body.innerHTML =
-      "<html><head><title></title></head><body>" +
-      divElements + "</body></html>";
-    window.print();
-    document.body.innerHTML = oldPage;
+    let data: any[] = []
+    this.rows.forEach(row => {
+      if (typeof row.productName === 'object' && 'label' in row.productName) {
+        console.log("if");
+        
+        const requestBody = {
+          ...row,
+          productId: row.id,
+          productName: row.productName?.['label'],
+          ratePerKg: row.ratePerKg
+        };
+        data.push(requestBody);
+      } else {       
+        console.log("else");        
+        const requestBody = {
+          ...row,
+          productId: row.id,
+          productName: row.productName,
+          ratePerKg: row.ratePerKg
+        };
+        data.push(requestBody);
+      };
+      console.log(data);
+
+    });
+    this.rows = data
+    console.log(this.rows);
+    this.service.saveProduct(this.rows).subscribe();
+    // const printContent = document.getElementById('printTable');
+    // if (printContent) {
+    //   window.print();
+    // }
+
+    // var divElements = document.getElementById("printTable")?.outerHTML;
+    // var oldPage = document.body.innerHTML;
+    // document.body.innerHTML =
+    //   "<html><head><title></title></head><body>" +
+    //   divElements + "</body></html>";
+    // window.print();
+    // document.body.innerHTML = oldPage;
 
 
     // const printWindow = window.open('', '_blank');
@@ -64,7 +97,13 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.service.getProductList().subscribe(
       (res: Product[]) => {
-        this.productData = res;
+        this.productData = res.map(x => {
+          let y = {
+            ...x,
+            billingNameValue: `${x.billingName + '  -  Rs.' + x.ratePerKg}`
+          }
+          return y
+        });
       }
     );
   }
@@ -94,6 +133,13 @@ export class HomeComponent implements OnInit {
     }
   }
   updateRatePerKg(row: any, selectedProductName: string) {
+    // this.rows = this.rows.map(x => {
+    //   if (x === row) {
+    //     console.log(selectedProductName);
+    //     x.productName = selectedProductName;
+    //   }
+    //   return x
+    // });
     const selectedProduct = this.productData.find(product => product.billingName === selectedProductName);
     if (selectedProduct) {
       row.ratePerKg = selectedProduct.ratePerKg;
@@ -113,7 +159,7 @@ export class HomeComponent implements OnInit {
         productName: row.productName.label,
         ratePerKg: row.ratePerKg
       };
-      console.log("If : "+requestBody);
+      console.log("If : " + requestBody);
       this.service.saveProduct(requestBody).subscribe();
     } else {
       const requestBody = {
@@ -121,7 +167,7 @@ export class HomeComponent implements OnInit {
         productName: row.productName,
         ratePerKg: row.ratePerKg
       };
-      console.log("Else : "+requestBody); 
+      console.log("Else : " + requestBody);
       this.service.saveProduct(requestBody).subscribe((response) => {
         alert('Product saved successfully!');
       });

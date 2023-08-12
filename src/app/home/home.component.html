@@ -25,6 +25,7 @@
               {{ product.billingName }} - Rs.{{ product.ratePerKg }}
             </ng-option>
           </ng-select>
+
         </td>
         <td><input type="number" class="form-control" name="ratePerKg" [(ngModel)]="row.ratePerKg"
             (input)="calculateAmount(row)" (keypress)="validateInput($event)"></td>
@@ -50,6 +51,7 @@
   </div>
 </div>
 
+<!-- ngxPrint printSectionId="printTable" styleSheetFile="src/print-style.css" -->
 
 
 

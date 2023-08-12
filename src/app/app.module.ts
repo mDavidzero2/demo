@@ -10,6 +10,7 @@ import { PipePipe } from './pipe/pipe.pipe';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
   imports: [
     BrowserModule,
     NgSelectModule,
-
+    NgxPrintModule,
     MatSelectModule,
     FormsModule,
     RouterModule,
